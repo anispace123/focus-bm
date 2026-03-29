@@ -1,0 +1,232 @@
+/* FOCUS.bm — корпоративті жасыл тема */
+:root {
+  --bg: #ecfdf5;
+  --bg-deep: #d1fae5;
+  --surface: #ffffff;
+  --text: #064e3b;
+  --muted: #047857;
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-dark: #065f46;
+  --primary-light: #34d399;
+  --accent: #10b981;
+  --border: #a7f3d0;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(6, 95, 70, 0.12);
+  --header-glow: rgba(255, 255, 255, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  background: linear-gradient(180deg, var(--bg) 0%, #f0fdf4 40%, var(--bg-deep) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--primary-dark);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: linear-gradient(135deg, #022c22 0%, #065f46 42%, #059669 100%);
+  color: #fff;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  box-shadow: var(--shadow);
+  border-bottom: 1px solid rgba(167, 243, 208, 0.35);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.brand-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(209, 250, 229, 0.95);
+  opacity: 0.95;
+}
+
+nav {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+nav a {
+  color: rgba(255, 255, 255, 0.95);
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+nav a:hover,
+nav a.active {
+  background: var(--header-glow);
+  color: #fff;
+}
+
+main {
+  flex: 1;
+  padding: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+input,
+textarea,
+button {
+  font-size: 1rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  background: #fff;
+  color: var(--text);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+}
+
+button.primary {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: #fff;
+  border: none;
+  padding: 0.65rem 1.1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.35);
+}
+
+button.primary:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+button.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.ghost {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #fff;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+}
+
+main button.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+main button.ghost:hover {
+  border-color: var(--primary);
+  color: var(--primary-dark);
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #b91c1c;
+  font-size: 0.9rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .grid.two {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.app-footer {
+  margin-top: auto;
+  padding: 1rem 1.25rem 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.app-footer a {
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+.footer-sep {
+  margin: 0 0.35rem;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.footer-note {
+  font-size: 0.85rem;
+}

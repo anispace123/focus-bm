@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String
+  role         Role     @default(USER)
+  blocked      Boolean  @default(false)
+  bio          String   @default("")
+  city         String   @default("")
+  createdAt    DateTime @default(now())
+
+  courses      Course[]       @relation("AuthorCourses")
+  enrollments  Enrollment[]
+  posts        Post[]
+  likes        Like[]
+  sentMessages Message[]      @relation("SentMessages")
+  memberships  ConversationMember[]
+  matchesA     Match[]        @relation("MatchA")
+  matchesB     Match[]        @relation("MatchB")
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  published   Boolean  @default(false)
+  authorId    String
+  author      User     @relation("AuthorCourses", fields: [authorId], references: [id])
+  lessons     Lesson[]
+  enrollments Enrollment[]
+  createdAt   DateTime @default(now())
+}
+
+model Lesson {
+  id        String @id @default(cuid())
+  courseId  String
+  course    Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title     String
+  sortOrder Int    @default(0)
+  videoUrl  String @default("")
+}
+
+model Enrollment {
+  userId   String
+  courseId String
+  progress Int     @default(0)
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course   Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@id([userId, courseId])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime @default(now())
+  likes     Like[]
+}
+
+model Like {
+  userId String
+  postId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
+}
+
+model Conversation {
+  id        String                 @id @default(cuid())
+  isGroup   Boolean                @default(false)
+  title     String?
+  members   ConversationMember[]
+  messages  Message[]
+  createdAt DateTime               @default(now())
+}
+
+model ConversationMember {
+  conversationId String
+  userId         String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([conversationId, userId])
+}
+
+/// Сервер тек шифрланған blob сақтайды — plaintext жоқ (E2EE ретрансляция)
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id])
+  ciphertext     String
+  contentType    String       @default("text")
+  createdAt      DateTime     @default(now())
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  userAId   String
+  userBId   String
+  score     Float    @default(0)
+  status    String   @default("pending")
+  userA     User     @relation("MatchA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB     User     @relation("MatchB", fields: [userBId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userAId, userBId])
+}
